@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.treinamento.mapper.ItemPedidoMapper">
+
+    <insert id="inserir" parameterType="br.com.treinamento.model.ItemPedido" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO item_pedido (qtde_item, pedido_id, produto_id) VALUES (#{item_pedido.qtde_item}, #{item_pedido.pedido.id}, #{item_pedido.produto.id})
+    </insert>
+
+    <insert id="inserirItens" parameterType="br.com.treinamento.model.ItemPedido" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO item_pedido (qtde_item, pedido_id, produto_id) VALUES
+        <foreach collection="itensPedido" item="item" open="(" separator="),(" close=")">
+            #{item.qtde_item},
+            #{item.pedido_id},
+            #{item.produto.id}
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.treinamento.mapper.PedidoMapper">
+
+    <resultMap id="pedidoMap" type="br.com.treinamento.model.Pedido">
+        <result column="id" property="id"/>
+
+        <association javaType="br.com.treinamento.model.Filial" property="filial">
+            <result column="f_id" property="id"/>
+            <result column="f_descricao" property="descricao"/>
+        </association>
+
+        <collection property="listaItens" javaType="ArrayList" ofType="br.com.treinamento.model.ItemPedido">
+            <result column="i_id" property="id"/>
+            <result column="i_qtd" property="qtde_item"/>
+            <result column="i_pedido_id" property="pedido_id"/>
+
+            <association javaType="br.com.treinamento.model.Produto" property="produto">
+                <result column="p_id" property="id"/>
+                <result column="p_descricao" property="descricao"/>
+                <result column="p_valor" property="valor"/>
+            </association>
+        </collection>
+
+    </resultMap>
+
+    <select id="recuperarPedidoPorId" resultMap="pedidoMap">
+        SELECT
+            p.id AS id,
+            f.id AS f_id,
+            f.descricao AS f_descricao,
+            prod.id AS p_id,
+            prod.descricao AS p_descricao,
+            prod.valor AS p_valor,
+            i.id AS i_id,
+            i.qtde_item AS i_qtd,
+            i.pedido_id AS i_pedido_id
+                FROM pedido AS p
+                INNER JOIN filial AS f ON filial_id = f.id
+                INNER JOIN item_pedido AS i ON i.pedido_id = p.id
+                INNER JOIN produto AS prod ON i.produto_id = prod.id
+        WHERE p.id = #{pedidoId}
+    </select>
+
+    <insert id="criarPedido" parameterType="br.com.treinamento.model.Pedido" useGeneratedKeys="true" keyColumn="id" keyProperty="pedido.id">
+        INSERT INTO pedido (filial_id) VALUES (#{pedido.filial.id})
+    </insert>
+
+</mapper>

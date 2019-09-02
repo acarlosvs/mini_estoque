@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.treinamento.mapper.EstoqueMapper">
+
+    <resultMap id="estoqueMap" type="br.com.treinamento.model.Estoque">
+        <result column="id" property="id"/>
+        <result column="qtde_produto" property="qtde_produto"/>
+
+        <association javaType="br.com.treinamento.model.Filial" property="filial">
+            <result column="f_id" property="id"/>
+            <result column="f_descricao" property="descricao"/>
+        </association>
+
+        <association javaType="br.com.treinamento.model.Produto" property="produto">
+            <result column="p_id" property="id"/>
+            <result column="p_descricao" property="descricao"/>
+            <result column="p_valor" property="valor"/>
+        </association>
+
+    </resultMap>
+
+    <select id="recuperarEstoqueFilial" resultMap="estoqueMap">
+        SELECT
+            e.id AS id,
+            e.qtde_produto AS qtde_produto,
+            f.id AS f_id,
+            f.descricao AS f_descricao,
+            p.id AS p_id,
+            p.descricao AS p_descricao,
+            p.valor AS p_valor
+                FROM estoque AS e
+                INNER JOIN filial AS f ON filial_id = f.id
+                INNER JOIN produto AS p ON produto_id = p.id
+        WHERE e.filial_id = #{filialId}
+    </select>
+
+    <select id="recuperarQtdeEmEstoque" resultType="java.lang.Integer">
+        SELECT qtde_produto FROM estoque WHERE filial_id = #{filialId} AND produto_id = #{produtoId}
+    </select>
+
+    <update id="atualizarQuantidadeProduto" parameterType="br.com.treinamento.model.Estoque">
+        UPDATE estoque SET qtde_produto = #{qtdeProdutos} WHERE produto_id = #{produtoId} AND filial_id = #{filialId}
+    </update>
+
+</mapper>

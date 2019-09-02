@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.treinamento.mapper.FilialMapper">
+
+    <select id="recuperarFiliais" resultType="br.com.treinamento.model.Filial">
+        select * from filial
+    </select>
+
+    <select id="recuperarPorId" resultType="br.com.treinamento.model.Filial">
+        select * from filial WHERE id = #{id}
+    </select>
+
+    <insert id="inserir" parameterType="br.com.treinamento.model.Filial" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO filial (descricao) VALUES (#{filial.descricao})
+    </insert>
+
+</mapper>

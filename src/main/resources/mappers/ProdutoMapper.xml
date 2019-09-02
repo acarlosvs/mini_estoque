@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.treinamento.mapper.ProdutoMapper">
+
+    <select id="recuperarProdutos" resultType="br.com.treinamento.model.Produto">
+        select * from produto
+    </select>
+
+    <select id="recuperarPorId" resultType="br.com.treinamento.model.Produto">
+        select * from produto WHERE id = #{id}
+    </select>
+
+    <insert id="inserir" parameterType="br.com.treinamento.model.Produto" useGeneratedKeys="true" keyColumn="id" keyProperty="produto.id">
+        INSERT INTO produto (descricao, valor) VALUES (#{produto.descricao}, #{produto.valor})
+    </insert>
+
+</mapper>
